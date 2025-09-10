@@ -1,0 +1,11 @@
+PORT=5000
+
+# MongoDB Atlas connection URI
+MONGO_URL=
+# Cloudinary credentials
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+
+# JWT Secret for signing tokens
+JWT_SECRET=
