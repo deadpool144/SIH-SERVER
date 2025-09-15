@@ -27,3 +27,4 @@ app.use("/api/auth", authRoutes);
 
 
 export { app };
+

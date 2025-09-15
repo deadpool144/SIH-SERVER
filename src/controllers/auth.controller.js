@@ -105,3 +105,33 @@ export const LogoutUser = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, null, "Logged out successfully"));
 });
+
+
+export const checkAuth = asyncHandler(async (req, res) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    throw new ApiError(401, "Unauthorized: No token provided");
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        {
+          user: {
+            firstName: decoded.firstName,
+            lastName: decoded.lastName,
+            email: decoded.email,
+          },
+        },
+        "User authenticated successfully"
+      )
+    );
+  } catch (err) {
+    console.error("Auth Check Error:", err.message);
+    throw new ApiError(401, "Unauthorized: Invalid or expired token");
+  }
+});
