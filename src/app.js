@@ -7,9 +7,22 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+
+const allowedOrigins = [
+  "https://sih-client-mu.vercel.app",
+  "http://localhost:3000"
+];
+
 app.use(cors({
-  origin: ["*","sih-client-mu.vercel.app","http://localhost:3000"],
-  credentials: true, // allow cookies
+  origin: function(origin, callback) {
+    // allow requests with no origin (like Postman)
+    if (!origin) return callback(null, true); 
+    if (allowedOrigins.indexOf(origin) === -1) {
+      return callback(new Error("Not allowed by CORS"), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true
 }));
 
 
