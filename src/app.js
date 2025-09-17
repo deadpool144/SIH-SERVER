@@ -29,11 +29,13 @@ app.use(cors({
 //import routes
 
 import authRoutes from "./routes/auth.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 
 
 //use routes
 app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 
 
 
