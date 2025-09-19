@@ -30,12 +30,16 @@ app.use(cors({
 
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import alumniRoutes from "./routes/alumni.routes.js";
+import eventRoutes from "./routes/event.routes.js";
 
 
 
 //use routes
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/alumni", alumniRoutes);
+app.use("/api/event", eventRoutes);
 
 
 
