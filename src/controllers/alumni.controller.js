@@ -86,3 +86,40 @@ export const getAlumniProfile = asyncHandler(async (req, res) => {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 });
+
+
+export const getRandomAlumni = asyncHandler(async (req, res) => {
+  try {
+    const count = parseInt(req.query.count) || 6; // default 6 random alumni
+
+    // Step 1: Sample random user details
+    const randomDetails = await UserDetail.aggregate([{ $sample: { size: count } }]);
+
+    // Step 2: For each, fetch related docs
+    const alumni = await Promise.all(
+      randomDetails.map(async (detail) => {
+        const userId = detail.userId;
+        const contact = await Contact.findOne({ userId }).lean();
+        const education = await Education.findOne({ userId }).lean();
+        const skillsDoc = await Skill.findOne({ userId }).lean();
+        const workExperienceDoc = await WorkExperience.findOne({ userId }).lean();
+        const contribution = await Contribution.findOne({ userId }).lean();
+
+        return {
+          _id: userId,
+          profile: detail,
+          contact,
+          education,
+          skills: skillsDoc?.skills || [],
+          workExperience: workExperienceDoc?.experiences || [],
+          contribution,
+        };
+      })
+    );
+
+    res.status(200).json(new ApiResponse(200, alumni, "Random alumni fetched successfully"));
+  } catch (err) {
+    console.error("Error fetching random alumni:", err);
+    res.status(500).json(new ApiResponse(500, null, "Server error"));
+  }
+});

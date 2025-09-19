@@ -79,3 +79,4 @@ export const getAllEvents = asyncHandler(async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 });
+
