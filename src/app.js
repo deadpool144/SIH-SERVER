@@ -33,7 +33,7 @@ import userRoutes from "./routes/user.routes.js";
 import alumniRoutes from "./routes/alumni.routes.js";
 import eventRoutes from "./routes/event.routes.js";
 import postRoutes from "./routes/post.routes.js";
-
+import messageRoutes from "./routes/message.routes.js";
 
 //use routes
 app.use("/api/auth", authRoutes);
@@ -41,6 +41,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/alumni", alumniRoutes);
 app.use("/api/event", eventRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api/chats", messageRoutes);
 
 
 

@@ -20,9 +20,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// ============================
-// 📌 Get Logged-in User Profile
-// ============================
 export const getProfile = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const user= await User.find({_id:userId})
@@ -50,9 +47,6 @@ export const getProfile = asyncHandler(async (req, res) => {
   );
 });
 
-// ============================
-// 📌 Add or Update Full Profile
-// ============================
 export const addOrUpdateProfile = asyncHandler(async (req, res) => {
   try {
     const userId = req.user._id;
@@ -80,7 +74,7 @@ export const addOrUpdateProfile = asyncHandler(async (req, res) => {
 
     let profileImageUrl;
 
-    // ✅ Upload image if present
+    //  Upload image if present
     if (req.file) {
       const streamUpload = (buffer) => {
         return new Promise((resolve, reject) => {
@@ -99,28 +93,28 @@ export const addOrUpdateProfile = asyncHandler(async (req, res) => {
       profileImageUrl = result.secure_url;
     }
 
-    // ✅ Update or create UserDetail
+    //  Update or create UserDetail
     const userDetail = await UserDetail.findOneAndUpdate(
       { userId },
       { batch, department, role, ...(profileImageUrl && { profileImage: profileImageUrl }) },
       { new: true, upsert: true }
     );
 
-    // ✅ Update or create Contact
+    //  Update or create Contact
     const contact = await Contact.findOneAndUpdate(
       { userId },
       { email, phone, linkedin, location },
       { new: true, upsert: true }
     );
 
-    // ✅ Update or create Education
+    //  Update or create Education
     const education = await Education.findOneAndUpdate(
       { userId },
       { tenth, twelfth, cgpa },
       { new: true, upsert: true }
     );
 
-    // ✅ Update Skills (as array in single doc)
+    //  Update Skills (as array in single doc)
     if (skills) {
       const skillArray = Array.isArray(skills) ? skills : JSON.parse(skills);
       await Skill.findOneAndUpdate(
@@ -130,7 +124,7 @@ export const addOrUpdateProfile = asyncHandler(async (req, res) => {
       );
     }
 
-    // ✅ Update Work Experience (as array in single doc)
+    //  Update Work Experience (as array in single doc)
     if (workExperience) {
       const workArray = Array.isArray(workExperience) ? workExperience : JSON.parse(workExperience);
       await WorkExperience.findOneAndUpdate(
@@ -140,7 +134,7 @@ export const addOrUpdateProfile = asyncHandler(async (req, res) => {
       );
     }
 
-    // ✅ Update or create Contribution
+    //  Update or create Contribution
     const contribution = await Contribution.findOneAndUpdate(
       { userId },
       { mentorship, donation, lastDonation, totalDonations, eventsAttended, leaderRank },
