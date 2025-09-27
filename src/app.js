@@ -10,20 +10,24 @@ app.use(cookieParser());
 
 const allowedOrigins = [
   "https://sih-client-mu.vercel.app",
-  "http://localhost:3000"
+  "http://localhost:3000",
+  /\.vercel\.app$/   // regex match for any Vercel subdomain
 ];
 
 app.use(cors({
-  origin: function(origin, callback) {
-    // allow requests with no origin (like Postman)
-    if (!origin) return callback(null, true); 
-    if (allowedOrigins.indexOf(origin) === -1) {
-      return callback(new Error("Not allowed by CORS"), false);
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (
+      allowedOrigins.includes(origin) ||
+      /\.vercel\.app$/.test(origin)
+    ) {
+      return callback(null, true);
     }
-    return callback(null, true);
+    return callback(new Error("Not allowed by CORS"));
   },
-  credentials: true
+  credentials: true,
 }));
+
 
 
 //import routes
