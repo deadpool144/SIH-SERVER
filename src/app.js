@@ -28,6 +28,9 @@ app.use(cors({
   credentials: true,
 }));
 
+app.get('/', (req, res) => {
+    res.send('API is running...');
+})
 
 
 //import routes
